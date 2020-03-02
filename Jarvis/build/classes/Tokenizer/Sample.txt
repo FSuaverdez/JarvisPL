@@ -25,5 +25,15 @@ JARVIS Test
         {
             display(i);
         }
+
+        int x;
+        char y;
+	for(x=0;x<5;x++)
+	{
+		display("Enter a letter: ");
+        	read(y.char);
+	}
+		
+		display("Here's a letter" + '');	
     }
 }

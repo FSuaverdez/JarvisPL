@@ -24,8 +24,9 @@ public class Tokenizer {
 
         this.str = str;
 
-        tokenDatas.add(new TokenData(Pattern.compile("^([\\/][\\/].*[;])"), TokenType.COMMENT));
-        tokenDatas.add(new TokenData(Pattern.compile("^([\\/][\\*].*[\\*][\\/])"),TokenType.COMMENT));
+        tokenDatas.add(new TokenData(Pattern.compile("^([\\/][\\/].*[\\n]?)"), TokenType.COMMENT));
+        tokenDatas.add(new TokenData(Pattern.compile("^([\\/][\\*]([\\n]*.*[\\n]*)*[\\*][\\/])"), TokenType.COMMENT));
+        
 
         for (String s : new String[]{"string", "int", "boolean", "char", "double", "float", "void"}) {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.DATA_TYPES));
@@ -35,7 +36,7 @@ public class Tokenizer {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.CONDITIONAL_STATEMENTS));
         }
 
-        for (String s : new String[]{"display", "read","JARVIS","return","method"}) {
+        for (String s : new String[]{"display", "read", "JARVIS", "return", "method"}) {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.RESERVED_WORDS));
         }
 
@@ -43,26 +44,33 @@ public class Tokenizer {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.LOOP_STATEMENTS));
         }
 
-        
-
         tokenDatas.add(new TokenData(Pattern.compile("^([a-zA-z][a-zA-Z0-9]*)"), TokenType.IDENTIFIER));
         tokenDatas.add(new TokenData(Pattern.compile("^((-)?[0-9]*[\\.][0-9]?[0-9]*)"), TokenType.DECIMAL_LITERAL));
         tokenDatas.add(new TokenData(Pattern.compile("^((-)?[0-9]+)"), TokenType.INTEGER_LITERAL));
         tokenDatas.add(new TokenData(Pattern.compile("^(\".*\")"), TokenType.STRING_LITERAL));
+        tokenDatas.add(new TokenData(Pattern.compile("^(\'.?\')"), TokenType.CHAR_LITERAL));
 
         for (String s : new String[]{"[\\>][\\=]?", "[\\<][\\=]?", "[\\!][\\=]", "[\\=][\\=]"}) {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.RELATIONAL_OPERATORS));
         }
-        for (String s : new String[]{"\\-", "\\+", "\\/", "\\*", "\\="}) {
+
+        for (String s : new String[]{"[\\+][\\+]", "[\\-][\\-]"}) {
+            tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.INC_DEC_OPERATOR));
+        }
+
+        for (String s : new String[]{"[\\+][\\=]", "[\\-][\\=]", "[\\*][\\=]", "[\\/][\\=]", "\\-", "\\+", "\\/", "\\*", "\\="}) {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.ARITHMETIC_OPERATORS));
         }
+
         for (String s : new String[]{"[\\&][\\&]?", "[\\|][\\|]?", "[\\!]"}) {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.LOGICAL_OPERATORS));
         }
-        
-        for (String s : new String[]{"\\.", "\\,", "\\(", "\\)", "\\;", "\\:","\\{", "\\}","\\@"}) {
+
+        for (String s : new String[]{"\\.", "\\,", "\\(", "\\)", "\\;", "\\:", "\\{", "\\}"}) {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.TOKEN));
         }
+        
+        tokenDatas.add(new TokenData(Pattern.compile("^(.*)"), TokenType.INVALID));
 
     }
 
@@ -81,13 +89,19 @@ public class Tokenizer {
 
                 if (data.getType() == TokenType.STRING_LITERAL) {
                     return (lastToken = new Token(token.substring(1, token.length() - 1), TokenType.STRING_LITERAL));
-                } else {
+                } else if (data.getType() == TokenType.CHAR_LITERAL) {
+                    return (lastToken = new Token(token.substring(1, token.length() - 1), TokenType.CHAR_LITERAL));
+                } else  {
                     return (lastToken = new Token(token, data.getType()));
                 }
             }
         }
 
-        throw new IllegalStateException("\n\nANO TO?" + str);
+        
+        throw new IllegalStateException( "Invalid Token: "+str);
+        
+        
+        
     }
 
     public boolean hasNext() {
@@ -105,6 +119,8 @@ public class Tokenizer {
                     return "Integer";
                 case STRING_LITERAL:
                     return "String";
+                case CHAR_LITERAL:
+                    return "Character";
                 case TOKEN:
                     return "Token";
                 case RESERVED_WORDS:
@@ -123,6 +139,10 @@ public class Tokenizer {
                     return "Loop Statements";
                 case COMMENT:
                     return "Comment Statements";
+                case INC_DEC_OPERATOR:
+                    return "Increment/Decrement";
+                case INVALID:
+                    return "Invalid Token";
                 default:
                     break;
             }

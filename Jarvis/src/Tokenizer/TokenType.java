@@ -28,6 +28,8 @@ public enum TokenType {
     
     LOOP_STATEMENTS,
     
+    INVALID,
+    
     COMMENT,
     
     CONDITIONAL_STATEMENTS,
@@ -39,6 +41,10 @@ public enum TokenType {
     INTEGER_LITERAL,
     
     STRING_LITERAL,
+    
+    CHAR_LITERAL,
+    
+    INC_DEC_OPERATOR,
     
     
 }
