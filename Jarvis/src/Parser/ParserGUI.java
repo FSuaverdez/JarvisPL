@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Tokenizer;
+package Parser;
 
+import Tokenizer.*;
 import com.formdev.flatlaf.*;
 import com.formdev.flatlaf.FlatLaf;
 import java.awt.event.KeyEvent;
@@ -13,12 +14,12 @@ import java.awt.event.KeyEvent;
  *
  * @author asus
  */
-public class TokenizerGUI extends javax.swing.JFrame {
+public class ParserGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form TokenizerGUI
      */
-    public TokenizerGUI() {
+    public ParserGUI() {
 
         initComponents();
 
@@ -99,11 +100,10 @@ public class TokenizerGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         String test = scanTextArea.getText();
 
-        Tokenizer token = new Tokenizer(test);
+        Parser token = new Parser(test);
         String output = "";
         while (token.hasNext()) {
-            
-            output += " " + token.nextToken().getToken() + " = " + token.getCurrToken() + "\n";
+            output += " " + token.nextBlock().getBlock();
         }
 
         resultArea.setText(output);
@@ -126,13 +126,13 @@ public class TokenizerGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TokenizerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ParserGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TokenizerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ParserGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TokenizerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ParserGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TokenizerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ParserGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         FlatLightLaf.install();
@@ -140,7 +140,7 @@ public class TokenizerGUI extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TokenizerGUI().setVisible(true);
+                new ParserGUI().setVisible(true);
 
             }
         });

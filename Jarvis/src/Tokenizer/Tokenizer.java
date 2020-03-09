@@ -44,7 +44,7 @@ public class Tokenizer {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.LOOP_STATEMENTS));
         }
 
-        tokenDatas.add(new TokenData(Pattern.compile("^([a-zA-z][a-zA-Z0-9]*)"), TokenType.IDENTIFIER));
+        tokenDatas.add(new TokenData(Pattern.compile("^([a-zA-Z]([\\_]*[a-zA-Z0-9])*[\\_]*)"), TokenType.IDENTIFIER));
         tokenDatas.add(new TokenData(Pattern.compile("^((-)?[0-9]*[\\.][0-9]?[0-9]*)"), TokenType.DECIMAL_LITERAL));
         tokenDatas.add(new TokenData(Pattern.compile("^((-)?[0-9]+)"), TokenType.INTEGER_LITERAL));
         tokenDatas.add(new TokenData(Pattern.compile("^(\".*\")"), TokenType.STRING_LITERAL));
@@ -76,7 +76,6 @@ public class Tokenizer {
 
     public Token nextToken() {
         str = str.trim();
-
         if (str.isEmpty()) {
             return (lastToken = new Token("", TokenType.EMPTY));
         }
