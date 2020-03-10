@@ -32,38 +32,31 @@ public final class Parser {
     
     public void tokenize()
     {
+        str = str.trim();
+        
         st = new StringTokenizer(str,"\\n");
     }
     
     public Block nextBlock()
     {
-        str = str.trim();
         if(str.isEmpty())
         {
-            System.out.println("wew");
             return (lastBlock = new Block(null,null,str,BlockType.EMPTY,null,null));
-            
         }
- 
-        
         if(st.hasMoreTokens())
         {
             String block = st.nextToken();
-            System.out.println("test1");
             block = block.trim();
             
             Tokenizer tokenized = new Tokenizer(block);
             Token first = tokenized.nextToken();
             if(first.getToken().equals("JARVIS"))
             {
-                System.out.println("test2");
                 Token next = tokenized.nextToken();
                 if(next.getType() == TokenType.IDENTIFIER)
                 {
-                    System.out.println("test3");
                     if(tokenized.hasNext())
                     {
-                        System.out.println("test");
                         next = tokenized.nextToken();
                         if(next.getToken().equals("{"))
                         {
@@ -74,6 +67,10 @@ public final class Parser {
                         {
                             return (lastBlock = new Block(null,null,block,BlockType.ERROR,null,null));
                         }
+                    }
+                    else
+                    {
+                        return (lastBlock = new Block(null,null,block,BlockType.JARVIS,null,null));
                     }
                 }
                 else
@@ -160,9 +157,56 @@ public final class Parser {
     
     public boolean hasNext()
     {
-        return (!st.hasMoreTokens());
+        if(str == null){
+            System.out.println("Flag4");
+            return(false);
+        }
+        System.out.println("Flag5: " + st.hasMoreTokens());
+        return (st.hasMoreTokens());
     }
     
+    public String getType()
+    {
+        if(lastBlock != null)
+        {
+            switch(lastBlock.getType())
+            {
+                case JARVIS:
+                    return "JARVIS";
+    
+                case METHOD:
+                    return "METHOD";
+    
+                case FOR:
+                    return "FOR LOOP";
+    
+                case WHILE:
+                    return "WHILE LOOP";
+    
+                case DO:
+                    return "DO WHILE LOOP";
+    
+                case IF:
+                    return "IF/IF ELSE";
+    
+                case ELSE:
+                    return "ELSE";
+    
+                case READ:
+                    return "READ Fucntion";
+    
+                case DISPLAY:
+                    return "DISPLAY FUNCTION";
+    
+                case ERROR:
+                    return "SYNTAX ERROR";
+    
+                case EMPTY:
+                    return "EMPTY CODE";
+            }
+        }
+        return null;
+    }
     
     
 }

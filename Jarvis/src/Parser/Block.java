@@ -45,4 +45,9 @@ public class Block {
         return currentBlock;
     }
     
+    public BlockType getType()
+    {
+        return type;
+    }
+    
 }
