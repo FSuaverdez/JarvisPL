@@ -16,11 +16,12 @@ public class Block {
     private Block superBlock;
     private Block subBlock;
     private String currentBlock;
+    private String name;
     private BlockType type;
     private DataType returnType;
     private ArrayList<Parameter> params;
     
-    public Block(Block superBlock, Block subBlock, String currentBlock, BlockType type,ArrayList<Parameter> params, DataType returnType)
+    public Block(Block superBlock, Block subBlock, String currentBlock, BlockType type,ArrayList<Parameter> params, DataType returnType, String name)
     {
         this.superBlock = superBlock;
         this.subBlock = subBlock;
@@ -28,6 +29,7 @@ public class Block {
         this.type = type;
         this.params = params;
         this.returnType = returnType;
+        this.name = name;
     }
     
     public Block getSuperBlock()
