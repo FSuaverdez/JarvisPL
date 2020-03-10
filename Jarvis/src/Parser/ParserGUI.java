@@ -71,13 +71,13 @@ public class ParserGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,18 +97,20 @@ public class ParserGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void scanTextAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_scanTextAreaKeyReleased
-        // TODO add your handling code here:
         String test = scanTextArea.getText();
 
-        Parser token = new Parser(test);
-        String output = "";
-        while (token.hasNext()) {
-            output += " " + token.nextBlock().getBlock();
+        System.out.println(test);
+        if(test != null){
+            Parser block = new Parser(test);
+            String output = "";
+            while (block.hasNext()) {
+                output += " " + block.nextBlock().getBlock() + " - " + block.getType();
+            }
+            resultArea.setText(output);
         }
-
-        resultArea.setText(output);
     }//GEN-LAST:event_scanTextAreaKeyReleased
 
+    
     /**
      * @param args the command line arguments
      */
