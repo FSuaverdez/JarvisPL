@@ -62,7 +62,7 @@ public class ParserGUI extends javax.swing.JFrame {
         jLabel1.setText("CODE");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel2.setText("TOKENIZED ");
+        jLabel2.setText("PARSED");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -104,7 +104,7 @@ public class ParserGUI extends javax.swing.JFrame {
             Parser block = new Parser(test);
             String output = "";
             while (block.hasNext()) {
-                output += " " + block.nextBlock().getBlock() + " - " + block.getType();
+                output += " " + block.nextBlock().getBlock() + " - " + block.getType() + "\n";
             }
             resultArea.setText(output);
         }
