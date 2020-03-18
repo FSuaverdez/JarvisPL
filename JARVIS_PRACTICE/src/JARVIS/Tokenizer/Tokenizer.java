@@ -47,8 +47,8 @@ public class Tokenizer {
         tokenDatas.add(new TokenData(Pattern.compile("^([a-zA-Z]([\\_]*[a-zA-Z0-9])*[\\_]*)"), TokenType.IDENTIFIER));
         tokenDatas.add(new TokenData(Pattern.compile("^((-)?[0-9]*[\\.][0-9]?[0-9]*)"), TokenType.DECIMAL_LITERAL));
         tokenDatas.add(new TokenData(Pattern.compile("^((-)?[0-9]+)"), TokenType.INTEGER_LITERAL));
-        tokenDatas.add(new TokenData(Pattern.compile("^(\".*\")"), TokenType.STRING_LITERAL));
-        tokenDatas.add(new TokenData(Pattern.compile("^(\'.?\')"), TokenType.CHAR_LITERAL));
+        tokenDatas.add(new TokenData(Pattern.compile("^(\"((\\\\n)*(\\\\t)*(\\\\\\\\)*(\")*([^\"\\\\])*)*\")"), TokenType.STRING_LITERAL));
+        tokenDatas.add(new TokenData(Pattern.compile("^(\'[^\\']?\')"), TokenType.CHAR_LITERAL));
 
         for (String s : new String[]{"[\\>][\\=]?", "[\\<][\\=]?", "[\\!][\\=]", "[\\=][\\=]"}) {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.RELATIONAL_OPERATORS));

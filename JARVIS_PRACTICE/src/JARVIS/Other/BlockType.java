@@ -27,4 +27,8 @@ public enum BlockType {
     
     RETURN,
     
+    DISPLAY,
+    
+    READ,
+    
 }
