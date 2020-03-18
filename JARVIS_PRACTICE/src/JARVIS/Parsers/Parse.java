@@ -17,7 +17,7 @@ import JARVIS.Other.BlockType;
  */
 public class Parse{
     
-    private Block lastBlock;
+    private Block superBlock;
     private String str;
     
     public Parse(String str)
@@ -33,23 +33,21 @@ public class Parse{
             return null;
         }
         
-        System.out.println("OOFED" + str);
         Parser parsed = new JARVIS_Parser(str);
         Block block = parsed.Parse();
-        if(parsed.didParse())
+        if(parsed.didParse() && superBlock == null)
         {
             str = parsed.getRemaining();
-            System.out.println("OOF1" + str);
-            return (lastBlock = (JARVIS_Block)block);
+            return (superBlock = (JARVIS_Block)block);
         }
         
-        parsed = new Method_Parser(str,lastBlock);
+        parsed = new Method_Parser(str,superBlock);
         block = parsed.Parse();
-        if(parsed.didParse() && lastBlock.getType() == BlockType.JARVIS)
+        if(parsed.didParse() && superBlock.getType() == BlockType.JARVIS)
         {
             str = parsed.getRemaining();
-            System.out.println("OOF2" + str);
-            return (lastBlock = (Method_Block)block);
+            superBlock.setSub(block);
+            return (superBlock = (Method_Block)block);
         }
         
         throw new IllegalStateException("OH NO!" + str);
@@ -63,6 +61,6 @@ public class Parse{
     
     public BlockType getType()
     {
-        return lastBlock.getType();
+        return superBlock.getType();
     }
 }
