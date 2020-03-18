@@ -89,10 +89,10 @@ public class Method_Parser extends Parser{
                 {
                     int checkP = 1;
                     int checkC = 0;
+                    block = "method " + returnToken + " " + name + "(";
                     while(tokenized.hasNext())
                     {
                         next = tokenized.nextToken();
-                        block = "method " + returnToken + " " + name + "(";
                         if(next.getToken().equals(")") && checkP == 1)
                         {
                             didParse = true;
