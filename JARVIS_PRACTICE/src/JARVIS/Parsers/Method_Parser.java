@@ -167,8 +167,9 @@ public class Method_Parser extends Parser{
                 return (lastBlock = new Method_Block(superBlock,null,null,null,null,BlockType.ERROR));
             }
         }
+        
         didParse = false;
-        throw new IllegalStateException("OH NO " + str);
+        return (lastBlock = new Method_Block(superBlock,null,null,null,null,BlockType.ERROR));
     }
 
     @Override

@@ -7,6 +7,7 @@ package JARVIS.Parsers;
 
 import JARVIS.Parsers.JARVIS_Parser;
 import JARVIS.Blocks.Block;
+import JARVIS.Blocks.Display_Block;
 import JARVIS.Blocks.JARVIS_Block;
 import JARVIS.Blocks.Method_Block;
 import JARVIS.Other.BlockType;
@@ -19,6 +20,7 @@ public class Parse{
     
     private Block superBlock;
     private String str;
+    private Block lastBlock;
     
     public Parse(String str)
     {
@@ -38,6 +40,7 @@ public class Parse{
         if(parsed.didParse() && superBlock == null)
         {
             str = parsed.getRemaining();
+            lastBlock = (JARVIS_Block)block;
             return (superBlock = (JARVIS_Block)block);
         }
         
@@ -47,7 +50,18 @@ public class Parse{
         {
             str = parsed.getRemaining();
             superBlock.setSub(block);
+            lastBlock = (Method_Block)block;
             return (superBlock = (Method_Block)block);
+        }
+        
+        parsed = new Display_Parser(str,superBlock);
+        block = parsed.Parse();
+        if(parsed.didParse() && superBlock.getType() == BlockType.METHOD)
+        {
+            str = parsed.getRemaining();
+            superBlock.setSub(block);
+            lastBlock = (Display_Block)block;
+            return (superBlock = (Display_Block)block);
         }
         
         throw new IllegalStateException("OH NO!" + str);
@@ -61,6 +75,6 @@ public class Parse{
     
     public BlockType getType()
     {
-        return superBlock.getType();
+        return lastBlock.getType();
     }
 }
