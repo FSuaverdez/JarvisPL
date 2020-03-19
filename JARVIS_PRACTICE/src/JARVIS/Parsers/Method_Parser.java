@@ -76,6 +76,9 @@ public class Method_Parser extends Parser{
                 case "string":
                     returnType = DataType.STRING;
                     break;
+                case "boolean":
+                    returnType = DataType.BOOLEAN;
+                    break;
                 default:
                     break;
             }
@@ -131,6 +134,9 @@ public class Method_Parser extends Parser{
                                     break;
                                 case "string":
                                     type = DataType.STRING;
+                                    break;
+                                case "boolean":
+                                    type = DataType.BOOLEAN;
                                     break;
                                 default:
                                     break;
