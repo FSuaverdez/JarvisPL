@@ -21,6 +21,7 @@ public class Method_Block extends Block{
     private DataType returnType;
     private BlockType type;
     private ArrayList<Parameter> parameters;
+    private Block returnBlock;
     
     public Method_Block(Block superBlock, String name, DataType returnType, ArrayList<Parameter> parameters, String block, BlockType type) 
     {
@@ -49,4 +50,15 @@ public class Method_Block extends Block{
     {
         return block;
     }
+    
+    public Block getRet()
+    {
+        return returnBlock;
+    }
+    
+    public void setRet(Block returnBlock)
+    {
+        this.returnBlock = returnBlock;
+    }
+    
 }

@@ -6,6 +6,7 @@
 package JARVIS_UI;
 
 import JARVIS.Parsers.Parse;
+import java.awt.event.KeyEvent;
 
 /**
  *
@@ -76,8 +77,7 @@ public class ParseUI extends javax.swing.JFrame {
 
     private void codeAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codeAreaKeyReleased
         String test = codeArea.getText();
-
-        System.out.println(test);
+        
         if(test != null){
             Parse parser = new Parse(test);
             String output = "";
