@@ -5,8 +5,9 @@
         <group>
             <file>file:/C:/Users/JMDC/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Blocks/Display_Block.java</file>
             <file>file:/C:/Users/JMDC/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Parsers/Parse.java</file>
-            <file>file:/C:/Users/JMDC/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Parsers/Display_Parser.java</file>
-            <file>file:/C:/Users/JMDC/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Tokenizer/Tokenizer.java</file>
+            <file>file:/C:/Users/JMDC/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Blocks/Block.java</file>
+            <file>file:/C:/Users/JMDC/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Parsers/return_Parser.java</file>
+            <file>file:/C:/Users/JMDC/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Blocks/Method_Block.java</file>
         </group>
     </open-files>
 </project-private>

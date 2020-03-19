@@ -44,19 +44,20 @@ public class Display_Parser extends Parser{
             didParse = false;
             return null;
         }
-        System.out.println("OOF1");
+        
         String block = "";
         String toBeDisp = "";
+        
         tokenized = new Tokenizer(str);
         Token first = tokenized.nextToken();
+        
         if(first.getToken().equals("display"))
         {
-            System.out.println("OOF2");
             block += first.getToken();
             Token next = tokenized.nextToken();
+            
             if(next.getToken().equals("("))
             {
-                System.out.println("OOF3");
                 block += next.getToken();
                 int chk = 1;
                 int chk1 = 1;
@@ -66,7 +67,6 @@ public class Display_Parser extends Parser{
                     next = tokenized.nextToken();
                     if(next.getToken().equals(")") && chk == 1 && (startchk == 1 || chk1 == 0))
                     {
-                        System.out.println("OOF5");
                         chk = 0;
                         block += next.getToken();
                         str = tokenized.getRemaining();
@@ -75,7 +75,6 @@ public class Display_Parser extends Parser{
                     }
                     else if(next.getToken().equals("+") && chk == 1 && chk1 == 0 && startchk == 0)
                     {
-                        System.out.println("OOF6");
                         chk = 0;
                         chk1 = 1;
                         block += " " + next.getToken() + " ";
@@ -83,7 +82,6 @@ public class Display_Parser extends Parser{
                     }
                     else if(next.getType() == TokenType.STRING_LITERAL && chk1==1)
                     {
-                        System.out.println("OOF7");
                         block += " \"" + next.getToken() + "\" ";
                         toBeDisp += " \"" + next.getToken() + "\" ";
                         chk = 1;
@@ -92,7 +90,6 @@ public class Display_Parser extends Parser{
                     }
                     else if(next.getType() == TokenType.IDENTIFIER && chk1 == 1)
                     {
-                        System.out.println("OOF8");
                         block += next.getToken();
                         toBeDisp += next.getToken();
                         chk = 1;
@@ -101,14 +98,12 @@ public class Display_Parser extends Parser{
                     }
                     else
                     {
-                        System.out.println("OOFed1");
                         return (lastBlock = new Display_Block(superBlock,null,BlockType.ERROR,null));
                     }
                 }
             }
             else
             {
-                System.out.println("OOFed2");
                 return (lastBlock = new Display_Block(superBlock,null,BlockType.ERROR,null));
             }
         }
