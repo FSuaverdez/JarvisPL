@@ -8,6 +8,7 @@ package JARVIS.Blocks;
 import JARVIS.Other.BlockType;
 import JARVIS.Other.DataType;
 import JARVIS.Other.Parameter;
+import JARVIS.Other.Variables;
 import java.util.ArrayList;
 
 /**
@@ -21,6 +22,9 @@ public class Method_Block extends Block{
     private DataType returnType;
     private BlockType type;
     private ArrayList<Parameter> parameters;
+    private Block returnBlock;
+    private ArrayList<Variables> var;
+    private boolean returned = false;
     
     public Method_Block(Block superBlock, String name, DataType returnType, ArrayList<Parameter> parameters, String block, BlockType type) 
     {
@@ -31,6 +35,18 @@ public class Method_Block extends Block{
         this.name = name;
         this.returnType =  returnType;
         this.parameters = parameters;
+        this.var = new ArrayList<>();
+        
+        if(returnType == DataType.VOID)
+            this.returned = true;
+        
+        if(parameters!=null)
+        {
+            for(Parameter a: parameters)
+            {
+                var.add(new Variables(a.getType(),a.getName()));
+            }
+        }
     }
     
     public void setSubBlock(Block subBlock)
@@ -49,4 +65,41 @@ public class Method_Block extends Block{
     {
         return block;
     }
+    
+    public Block getRet()
+    {
+        return returnBlock;
+    }
+    
+    public void setRet(Block returnBlock)
+    {
+        this.returned = true;
+        this.returnBlock = returnBlock;
+    }
+    
+    public void addVar(Variables var)
+    {
+        this.var.add(var);
+    }
+    
+    public ArrayList<Variables> getVar()
+    {
+        return var;
+    }
+    
+    public DataType getRetType()
+    {
+        return returnType;
+    }
+    
+    public boolean returned()
+    {
+        return returned;
+    }
+    
+    public String getName()
+    {
+        return name;
+    }
+    
 }

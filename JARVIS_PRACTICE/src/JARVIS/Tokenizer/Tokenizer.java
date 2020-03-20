@@ -31,12 +31,16 @@ public class Tokenizer {
         for (String s : new String[]{"string", "int", "boolean", "char", "double", "float", "void"}) {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.DATA_TYPES));
         }
+        
+        for (String s : new String[]{"false", "true"}) {
+            tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.BOOLEAN_LITERAL));
+        }
 
         for (String s : new String[]{"if", "else", "else if"}) {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.CONDITIONAL_STATEMENTS));
         }
 
-        for (String s : new String[]{"display", "read", "JARVIS", "return", "method"}) {
+        for (String s : new String[]{"display", "read", "JARVIS", "return", "method", "endMethod", "endJARVIS"}) {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.RESERVED_WORDS));
         }
 

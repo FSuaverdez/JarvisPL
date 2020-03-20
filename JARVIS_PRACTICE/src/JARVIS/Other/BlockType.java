@@ -31,4 +31,8 @@ public enum BlockType {
     
     READ,
     
+    ENDMETHOD,
+    
+    ENDJARVIS,
+    
 }

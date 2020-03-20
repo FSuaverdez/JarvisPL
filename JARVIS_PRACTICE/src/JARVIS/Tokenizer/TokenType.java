@@ -36,6 +36,8 @@ public enum TokenType {
     
     IDENTIFIER,
     
+    BOOLEAN_LITERAL,
+    
     DECIMAL_LITERAL,
     
     INTEGER_LITERAL,
