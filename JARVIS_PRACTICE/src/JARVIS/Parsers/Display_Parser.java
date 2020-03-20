@@ -7,8 +7,12 @@ package JARVIS.Parsers;
 
 import JARVIS.Blocks.Block;
 import JARVIS.Blocks.Display_Block;
+import JARVIS.Blocks.JARVIS_Block;
+import JARVIS.Blocks.Method_Block;
 import JARVIS.Other.BlockType;
+import JARVIS.Other.DataType;
 import JARVIS.Other.Parameter;
+import JARVIS.Other.Variables;
 import JARVIS.Tokenizer.Token;
 import JARVIS.Tokenizer.TokenType;
 import JARVIS.Tokenizer.Tokenizer;
@@ -92,9 +96,50 @@ public class Display_Parser extends Parser{
                     {
                         block += next.getToken();
                         toBeDisp += next.getToken();
-                        chk = 1;
-                        chk1 = 0;
-                        startchk = 0;
+                        chk = 0;
+                        Block hold = superBlock;
+                        while(superBlock != null)
+                        {
+                            if(superBlock.getType() == BlockType.METHOD)
+                            {
+                                Method_Block temp = (Method_Block)superBlock;
+                                ArrayList<Variables> var = temp.getVar();
+                                for(Variables a: var)
+                                {
+                                    if(a.getName().equals(next.getToken()))
+                                    {
+                                        chk = 1;
+                                        break;
+                                    }
+                                }
+                            }
+                            else if(superBlock.getType() == BlockType.JARVIS)
+                            {
+                                JARVIS_Block temp = (JARVIS_Block)superBlock;
+                                ArrayList<Variables> var = temp.getVar();
+                                for(Variables a: var)
+                                {
+                                    if(a.getName().equals(next.getToken()))
+                                    {
+                                        chk = 1;
+                                        break;
+                                    }
+                                }
+                            }
+                            superBlock = superBlock.getSuper();
+                        }
+                        superBlock = hold;
+                        
+                        System.out.println("^^^^^^^^ "+ chk);
+                        if(chk == 1)
+                        {
+                            chk1 = 0;
+                            startchk = 0;
+                        }
+                        else
+                        {
+                            return (lastBlock = new Display_Block(superBlock,null,BlockType.ERROR,null));
+                        }
                     }
                     else
                     {

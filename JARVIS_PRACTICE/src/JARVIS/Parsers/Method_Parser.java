@@ -122,6 +122,7 @@ public class Method_Parser extends Parser{
                                     didParse = true;
                                     block += ")"; 
                                     str = tokenized.getRemaining();
+                                    System.out.println("###### " + str);
                                     return (lastBlock = new Method_Block(superBlock,name,returnType,params,block,BlockType.METHOD));
                                 }
                                 else if(next.getToken().equals(",") && checkC == 1)
@@ -171,7 +172,6 @@ public class Method_Parser extends Parser{
                                     }
                                     else
                                     {
-                                        didParse = true;
                                         return (lastBlock = new Method_Block(superBlock,name,returnType,null,block,BlockType.ERROR));
                                     }
                                 }
