@@ -16,6 +16,7 @@ public class Display_Block extends Block{
     private String block;
     private String toBeDisplayed;
     private BlockType type;
+    private String code = "0010";
     
     
     public Display_Block(Block superBlock, String block, BlockType type, String toBeDisplayed) 
@@ -24,6 +25,10 @@ public class Display_Block extends Block{
         this.block = block;
         this.toBeDisplayed = toBeDisplayed;
         this.type = type;
+    }
+    
+    public String getCode(){
+        return code;
     }
 
     @Override

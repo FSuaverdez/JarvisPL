@@ -18,6 +18,7 @@ public abstract class Block {
     private String block;
     private ArrayList<Block> subBlock;
     private BlockType type;
+    private String code;
     
     public Block(Block superBlock, String block, BlockType type)
     {
@@ -30,6 +31,10 @@ public abstract class Block {
     public Block getSuper()
     {
         return superBlock;
+    }
+    
+    public String getCode(){
+        return code;
     }
     
     public void setSub(Block subBlock)

@@ -15,12 +15,16 @@ public class endMethod_Block extends Block{
 
     private BlockType type;
     private String block;
-    
+    private String code = "1110";
     
     public endMethod_Block(Block superBlock, String block, BlockType type) {
         super(superBlock, block, type);
         this.block = block;
         this.type = type;
+    }
+    
+    public String getCode(){
+        return code;
     }
 
     @Override

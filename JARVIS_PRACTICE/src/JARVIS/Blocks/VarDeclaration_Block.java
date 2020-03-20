@@ -18,6 +18,7 @@ public class VarDeclaration_Block extends Block{
     private BlockType type;
     private DataType varType;
     private String name;
+    private String code = "0100";
     
     public VarDeclaration_Block(Block superBlock, String block, BlockType type, DataType varType, String name) {
         super(superBlock, block, type);
@@ -25,6 +26,10 @@ public class VarDeclaration_Block extends Block{
         this.type = type;
         this.varType = varType;
         this.name = name;
+    }
+    
+    public String getCode(){
+        return code;
     }
 
     @Override

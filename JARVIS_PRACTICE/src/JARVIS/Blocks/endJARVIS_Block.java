@@ -15,11 +15,16 @@ public class endJARVIS_Block extends Block{
 
     private String block;
     private BlockType type;
+    private String code = "1001";
     
     public endJARVIS_Block(Block superBlock, String block, BlockType type) {
         super(superBlock, block, type);
         this.block = block;
         this.type = type;
+    }
+    
+    public String getCode(){
+        return code;
     }
 
     @Override

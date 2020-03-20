@@ -16,6 +16,7 @@ public class return_Block extends Block
     private BlockType type;
     private String block;
     private String returnValue;
+    private String code = "1000";
     
     
     
@@ -24,6 +25,10 @@ public class return_Block extends Block
         this.type = type;
         this.block = block;
         this.returnValue = returnValue;
+    }
+    
+    public String getCode(){
+        return code;
     }
 
     @Override

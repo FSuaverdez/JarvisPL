@@ -19,6 +19,7 @@ public class JARVIS_Block extends Block{
     private String block;
     private BlockType type;
     private ArrayList<Variables> var;
+    private String code = "0000";
     
     public JARVIS_Block(Block superBlock, String name, String block, BlockType type) {
         super(superBlock, block, type);
@@ -26,6 +27,10 @@ public class JARVIS_Block extends Block{
         this.block = block;
         this.type = type;
         this.var = new ArrayList<>();
+    }
+    
+    public String getCode(){
+        return code;
     }
     
     @Override

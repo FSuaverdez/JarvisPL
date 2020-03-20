@@ -28,6 +28,7 @@ public class Parse {
     private String str;
     private Block lastBlock;
     private boolean didParse = true;
+    private boolean endJARVIS = false;
     
     public Parse(String str)
     {
@@ -107,6 +108,7 @@ public class Parse {
                 str = parsed.getRemaining();
                 superBlock.setSub(block);
                 superBlock = superBlock.getSuper();
+                endJARVIS = true;
                 return (lastBlock = (endJARVIS_Block)block);
             }
 
@@ -166,5 +168,9 @@ public class Parse {
     public BlockType getType()
     {
         return lastBlock.getType();
+    }
+    
+    public boolean didJarvisEnd(){
+        return endJARVIS;
     }
 }

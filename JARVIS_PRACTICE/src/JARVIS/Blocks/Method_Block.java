@@ -25,6 +25,7 @@ public class Method_Block extends Block{
     private Block returnBlock;
     private ArrayList<Variables> var;
     private boolean returned = false;
+    private String code = "0001";
     
     public Method_Block(Block superBlock, String name, DataType returnType, ArrayList<Parameter> parameters, String block, BlockType type) 
     {
@@ -47,6 +48,10 @@ public class Method_Block extends Block{
                 var.add(new Variables(a.getType(),a.getName()));
             }
         }
+    }
+    
+    public String getCode(){
+        return code;
     }
     
     public void setSubBlock(Block subBlock)
