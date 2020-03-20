@@ -86,12 +86,16 @@ public class Parse {
             block = parsed.Parse();
             didParse = parsed.didParse();
             System.out.println("@@endm " + block.getBlock() + " " +didParse);
-            if(didParse && superBlock.getType() == BlockType.METHOD)
+            if(superBlock.getType() == BlockType.METHOD)
             {
-                str = parsed.getRemaining();
-                superBlock.setSub(block);
-                superBlock = superBlock.getSuper();
-                return (lastBlock = (endMethod_Block)block);
+                Method_Block temp = (Method_Block)superBlock;
+                if(didParse && temp.returned())
+                {
+                    str = parsed.getRemaining();
+                    superBlock.setSub(block);
+                    superBlock = superBlock.getSuper();
+                    return (lastBlock = (endMethod_Block)block);
+                }
             }
 
             parsed = new endJARVIS_Parser(str,superBlock);

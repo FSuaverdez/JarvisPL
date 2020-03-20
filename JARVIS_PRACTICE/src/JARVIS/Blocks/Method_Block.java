@@ -24,6 +24,7 @@ public class Method_Block extends Block{
     private ArrayList<Parameter> parameters;
     private Block returnBlock;
     private ArrayList<Variables> var;
+    private boolean returned = false;
     
     public Method_Block(Block superBlock, String name, DataType returnType, ArrayList<Parameter> parameters, String block, BlockType type) 
     {
@@ -35,6 +36,9 @@ public class Method_Block extends Block{
         this.returnType =  returnType;
         this.parameters = parameters;
         this.var = new ArrayList<>();
+        
+        if(returnType == DataType.VOID)
+            this.returned = true;
         
         if(parameters!=null)
         {
@@ -69,6 +73,7 @@ public class Method_Block extends Block{
     
     public void setRet(Block returnBlock)
     {
+        this.returned = true;
         this.returnBlock = returnBlock;
     }
     
@@ -80,6 +85,21 @@ public class Method_Block extends Block{
     public ArrayList<Variables> getVar()
     {
         return var;
+    }
+    
+    public DataType getRetType()
+    {
+        return returnType;
+    }
+    
+    public boolean returned()
+    {
+        return returned;
+    }
+    
+    public String getName()
+    {
+        return name;
     }
     
 }

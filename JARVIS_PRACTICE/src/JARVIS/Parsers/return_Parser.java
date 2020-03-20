@@ -6,12 +6,16 @@
 package JARVIS.Parsers;
 
 import JARVIS.Blocks.Block;
-import JARVIS.Blocks.endMethod_Block;
+import JARVIS.Blocks.JARVIS_Block;
+import JARVIS.Blocks.Method_Block;
 import JARVIS.Blocks.return_Block;
 import JARVIS.Other.BlockType;
+import JARVIS.Other.DataType;
+import JARVIS.Other.Variables;
 import JARVIS.Tokenizer.Token;
 import JARVIS.Tokenizer.TokenType;
 import JARVIS.Tokenizer.Tokenizer;
+import java.util.ArrayList;
 
 /**
  *
@@ -53,20 +57,108 @@ public class return_Parser extends Parser
         {
             block += first.getToken();
             Token next = tokenized.nextToken();
-            if(next.getType() == TokenType.IDENTIFIER || next.getType() == TokenType.CHAR_LITERAL || next.getType() == TokenType.STRING_LITERAL || next.getType() == TokenType.INTEGER_LITERAL || next.getType() == TokenType.DECIMAL_LITERAL || next.getType() == TokenType.BOOLEAN_LITERAL)
+            Method_Block tempM = (Method_Block)superBlock;
+            if(next.getType() == TokenType.IDENTIFIER)
             {
-                if(next.getType() == TokenType.STRING_LITERAL){
-                    returnValue = "\"" + next.getToken() + "\"";
-                    block += " \"" + next.getToken() + "\" ";
+                String name = next.getToken();
+                Block hold = superBlock;
+                int chk = 0;
+                while(superBlock!=null)
+                {
+                    if(superBlock.getType() == BlockType.METHOD)
+                    {
+                        Method_Block temp = (Method_Block)superBlock;
+                        ArrayList<Variables> var = temp.getVar();
+                        for(Variables a: var)
+                        {
+                            if(a.getName().equals(next.getToken()))
+                            {
+                                if((tempM.getRetType() == DataType.DOUBLE || tempM.getRetType() == DataType.FLOAT) && (a.getType() == DataType.DOUBLE || a.getType() == DataType.FLOAT || a.getType() == DataType.INT))
+                                    chk = 1;
+                                else if(tempM.getRetType() == DataType.STRING && (a.getType() == DataType.STRING || a.getType() == DataType.CHAR))
+                                    chk = 1;
+                                else if(tempM.getRetType() == a.getType())
+                                    chk = 1;
+                                break;
+                            }
+                        }
+                    }
+                    else if(superBlock.getType() == BlockType.JARVIS)
+                    {
+                        JARVIS_Block temp = (JARVIS_Block)superBlock;
+                        ArrayList<Variables> var = temp.getVar();
+                        for(Variables a: var)
+                        {
+                            if(a.getName().equals(next.getToken()))
+                            {
+                                if((tempM.getRetType() == DataType.DOUBLE || tempM.getRetType() == DataType.FLOAT) && (a.getType() == DataType.DOUBLE || a.getType() == DataType.FLOAT || a.getType() == DataType.INT))
+                                    chk = 1;
+                                else if(tempM.getRetType() == DataType.STRING && (a.getType() == DataType.STRING || a.getType() == DataType.CHAR))
+                                    chk = 1;
+                                else if(tempM.getRetType() == a.getType())
+                                    chk = 1;
+                                break;
+                            }
+                        }
+                    }
+                    superBlock = superBlock.getSuper();
                 }
-                else if(next.getType() == TokenType.CHAR_LITERAL){
-                    returnValue = "'" + next.getToken() + "'";
-                    block += " '" + next.getToken() + "' ";
-                }
-                else{
+                superBlock = hold;
+                
+                if(chk == 1)
+                {
                     returnValue = next.getToken();
                     block += " " + next.getToken();
+
+                    str = tokenized.getRemaining();
+                    didParse = true;
+                    return (lastBlock = new return_Block(superBlock, block, returnValue, BlockType.RETURN));
                 }
+                else
+                {
+                    didParse = false;
+                    return (lastBlock = new return_Block(superBlock, block, returnValue, BlockType.ERROR));
+                }
+                
+            }
+            else if(next.getType() == TokenType.CHAR_LITERAL && (tempM.getRetType() == DataType.CHAR || tempM.getRetType() == DataType.STRING))
+            {
+                returnValue = "'" + next.getToken() + "'";
+                block += " '" + next.getToken() + "' ";
+                str = tokenized.getRemaining();
+                didParse = true;
+                return (lastBlock = new return_Block(superBlock, block, returnValue, BlockType.RETURN));
+            }
+            else if(next.getType() == TokenType.STRING_LITERAL && tempM.getRetType() == DataType.STRING)
+            {
+                returnValue = "\"" + next.getToken() + "\"";
+                block += " \"" + next.getToken() + "\" ";
+                str = tokenized.getRemaining();
+                didParse = true;
+                return (lastBlock = new return_Block(superBlock, block, returnValue, BlockType.RETURN));
+            }
+            else if(next.getType() == TokenType.INTEGER_LITERAL && (tempM.getRetType() == DataType.INT || tempM.getRetType() == DataType.FLOAT || tempM.getRetType() == DataType.DOUBLE))                
+            {
+                returnValue = next.getToken();
+                block += " " + next.getToken();
+                str = tokenized.getRemaining();
+                didParse = true;
+                return (lastBlock = new return_Block(superBlock, block, returnValue, BlockType.RETURN));
+            }
+            else if(next.getType() == TokenType.DECIMAL_LITERAL && (tempM.getRetType() == DataType.FLOAT || tempM.getRetType() == DataType.DOUBLE))
+            {
+                returnValue = next.getToken();
+                block += " " + next.getToken();
+
+                str = tokenized.getRemaining();
+                didParse = true;
+                return (lastBlock = new return_Block(superBlock, block, returnValue, BlockType.RETURN));
+            }
+            else if(next.getType() == TokenType.BOOLEAN_LITERAL && tempM.getRetType() == DataType.BOOLEAN)
+            {
+                returnValue = next.getToken();
+                block += " " + next.getToken();
+
                 str = tokenized.getRemaining();
                 didParse = true;
                 return (lastBlock = new return_Block(superBlock, block, returnValue, BlockType.RETURN));

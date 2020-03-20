@@ -123,6 +123,7 @@ public class VarDeclaration_Parser extends Parser
                 {
                     block += " " + name;
                     next = tokenized.nextToken();
+                    String holder = next.getToken();
                     if(next.getToken().equals("=") && varType!=DataType.VOID)
                     {
                         block += " =";
@@ -235,7 +236,7 @@ public class VarDeclaration_Parser extends Parser
                     else
                     {
                         System.out.println("OOF7");
-                        str = tokenized.getRemaining();
+                        str = holder + " " + tokenized.getRemaining();
                         didParse = true;
                         return (lastBlock = new VarDeclaration_Block(superBlock,block,BlockType.VAR_DECLARATION,varType,name));
                     }

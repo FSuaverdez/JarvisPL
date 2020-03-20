@@ -86,85 +86,118 @@ public class Method_Parser extends Parser{
             if(next.getType() == TokenType.DATA_TYPES)
             {
                 next = tokenized.nextToken();
-                String name = next.getToken();
-                next = tokenized.nextToken();
-                if(next.getToken().equals("("))
+                if(next.getType() == TokenType.IDENTIFIER)
                 {
-                    int checkP = 1;
-                    int checkC = 0;
-                    block = "method " + returnToken + " " + name + "(";
-                    while(tokenized.hasNext())
+                    String name = next.getToken();
+                    int chk = 0;
+                    if(superBlock.getType() == BlockType.JARVIS)
+                    {
+                        JARVIS_Block temp = (JARVIS_Block)superBlock;
+                        ArrayList<Block> sub = temp.getSub();
+                        for(Block b: sub)
+                        {
+                            if(b.getType() == BlockType.METHOD)
+                            {
+                                Method_Block tempM = (Method_Block)b;
+                                if(tempM.getName().equals(name))
+                                    chk = 1;
+                                System.out.println("OOF!! " + chk);
+                            }
+                        }
+                    }
+                    
+                    if(chk == 0)
                     {
                         next = tokenized.nextToken();
-                        if(next.getToken().equals(")") && checkP == 1)
+                        if(next.getToken().equals("("))
                         {
-                            didParse = true;
-                            block += ")"; 
-                            str = tokenized.getRemaining();
-                            return (lastBlock = new Method_Block(superBlock,name,returnType,null,block,BlockType.METHOD));
-                        }
-                        else if(next.getToken().equals(",") && checkC == 1)
-                        {
-                            block += ", ";
-                            checkP = 0;
-                            checkC = 0;
-                        }
-                        else if((next.getType() == TokenType.DATA_TYPES))
-                        {
-                            checkP = 1;
-                            checkC = 1;
-                            block += next.getToken();
-                            String paramType = next.getToken();
-                            DataType type = null;
-                            switch (paramType) {
-                                case "void":
-                                    type = DataType.VOID;
-                                    break;
-                                case "int":
-                                    type = DataType.INT;
-                                    break;
-                                case "float":
-                                    type = DataType.FLOAT;
-                                    break;
-                                case "double":
-                                    type = DataType.DOUBLE;
-                                    break;
-                                case "char":
-                                    type = DataType.CHAR;
-                                    break;
-                                case "string":
-                                    type = DataType.STRING;
-                                    break;
-                                case "boolean":
-                                    type = DataType.BOOLEAN;
-                                    break;
-                                default:
-                                    break;
-                            }
+                            int checkP = 1;
+                            int checkC = 0;
+                            block = "method " + returnToken + " " + name + "(";
+                            while(tokenized.hasNext())
+                            {
+                                next = tokenized.nextToken();
+                                if(next.getToken().equals(")") && checkP == 1)
+                                {
+                                    didParse = true;
+                                    block += ")"; 
+                                    str = tokenized.getRemaining();
+                                    return (lastBlock = new Method_Block(superBlock,name,returnType,params,block,BlockType.METHOD));
+                                }
+                                else if(next.getToken().equals(",") && checkC == 1)
+                                {
+                                    block += ", ";
+                                    checkP = 0;
+                                    checkC = 0;
+                                }
+                                else if((next.getType() == TokenType.DATA_TYPES))
+                                {
+                                    checkP = 1;
+                                    checkC = 1;
+                                    block += next.getToken();
+                                    String paramType = next.getToken();
+                                    DataType type = null;
+                                    switch (paramType) {
+                                        case "void":
+                                            type = DataType.VOID;
+                                            break;
+                                        case "int":
+                                            type = DataType.INT;
+                                            break;
+                                        case "float":
+                                            type = DataType.FLOAT;
+                                            break;
+                                        case "double":
+                                            type = DataType.DOUBLE;
+                                            break;
+                                        case "char":
+                                            type = DataType.CHAR;
+                                            break;
+                                        case "string":
+                                            type = DataType.STRING;
+                                            break;
+                                        case "boolean":
+                                            type = DataType.BOOLEAN;
+                                            break;
+                                        default:
+                                            break;
+                                    }
 
-                            next = tokenized.nextToken();
-                            if(next.getType() == TokenType.IDENTIFIER)
-                            {
-                                block += " " + next.getToken();
-                                params.add(new Parameter(next.getToken(),type));
-                            }
-                            else
-                            {
-                                didParse = true;
-                                return (lastBlock = new Method_Block(superBlock,name,returnType,null,block,BlockType.ERROR));
+                                    next = tokenized.nextToken();
+                                    if(next.getType() == TokenType.IDENTIFIER)
+                                    {
+                                        block += " " + next.getToken();
+                                        params.add(new Parameter(next.getToken(),type));
+                                    }
+                                    else
+                                    {
+                                        didParse = true;
+                                        return (lastBlock = new Method_Block(superBlock,name,returnType,null,block,BlockType.ERROR));
+                                    }
+                                }
+                                else
+                                {
+                                    didParse = false;
+                                    return (lastBlock = new Method_Block(superBlock,name,returnType,null,block,BlockType.ERROR));
+                                }
                             }
                         }
                         else
                         {
                             didParse = false;
-                            return (lastBlock = new Method_Block(superBlock,name,returnType,null,block,BlockType.ERROR));
+                            return (lastBlock = new Method_Block(superBlock,name,returnType,null,null,BlockType.ERROR));
                         }
+                    }
+                    else
+                    {
+                        didParse = false;
+                        return (lastBlock = new Method_Block(superBlock,null,null,null,null,BlockType.ERROR));
                     }
                 }
                 else
                 {
                     didParse = false;
-                    return (lastBlock = new Method_Block(superBlock,name,returnType,null,null,BlockType.ERROR));
+                    return (lastBlock = new Method_Block(superBlock,null,null,null,null,BlockType.ERROR));
                 }
             }
             else
