@@ -3,12 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/JMDC/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Parsers/VarDeclaration_Parser.java</file>
-            <file>file:/C:/Users/JMDC/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Parsers/Parse.java</file>
-            <file>file:/C:/Users/JMDC/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Parsers/Display_Parser.java</file>
-            <file>file:/C:/Users/JMDC/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Blocks/Block.java</file>
-            <file>file:/C:/Users/JMDC/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Parsers/Method_Parser.java</file>
-            <file>file:/C:/Users/JMDC/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Parsers/return_Parser.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS_UI/ParseUI.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Translator/Display_Translator.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Translator/Translate.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Other/BlockType.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Blocks/JARVIS_Block.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Blocks/Method_Block.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Translator/Translator.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Translator/endMethod_Translator.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Tokenizer/Token.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Tokenizer/Test.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Translator/endJARVIS_Translator.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Parsers/Parse.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Blocks/Block.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/JARVIS_PRACTICE/src/JARVIS/Translator/return_Translator.java</file>
         </group>
     </open-files>
 </project-private>
