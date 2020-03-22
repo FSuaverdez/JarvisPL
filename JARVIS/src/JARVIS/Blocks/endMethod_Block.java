@@ -15,7 +15,7 @@ public class endMethod_Block extends Block{
 
     private BlockType type;
     private String block;
-    private String code = "1110";
+    private String code = "1010";
     
     public endMethod_Block(Block superBlock, String block, BlockType type) {
         super(superBlock, block, type);
