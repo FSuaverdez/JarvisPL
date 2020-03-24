@@ -93,6 +93,22 @@ public class Display_Parser extends Parser{
                         chk1 = 0;
                         startchk = 0;
                     }
+                    else if(next.getType() == TokenType.CHAR_LITERAL && chk1==1)
+                    {
+                        block += " \'" + next.getToken() + "\' ";
+                        toBeDisp += " \'" + next.getToken() + "\' ";
+                        chk = 1;
+                        chk1 = 0;
+                        startchk = 0;
+                    }
+                    else if(next.getType() == TokenType.INTEGER_LITERAL || next.getType() == TokenType.DECIMAL_LITERAL || next.getType() == TokenType.BOOLEAN_LITERAL && chk1==1)
+                    {
+                        block += " " + next.getToken() + " ";
+                        toBeDisp += " " + next.getToken() + " ";
+                        chk = 1;
+                        chk1 = 0;
+                        startchk = 0;
+                    }
                     else if(next.getType() == TokenType.IDENTIFIER && chk1 == 1)
                     {
                         block += next.getToken();
