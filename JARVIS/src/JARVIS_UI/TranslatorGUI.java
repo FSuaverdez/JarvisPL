@@ -28,7 +28,8 @@ public class TranslatorGUI extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         codeArea = new javax.swing.JTextArea();
@@ -43,8 +44,10 @@ public class TranslatorGUI extends javax.swing.JFrame {
 
         codeArea.setColumns(20);
         codeArea.setRows(5);
-        codeArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
+        codeArea.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
                 codeAreaKeyReleased(evt);
             }
         });
@@ -56,8 +59,10 @@ public class TranslatorGUI extends javax.swing.JFrame {
         jScrollPane2.setViewportView(outputArea);
 
         b_Translate.setText("Translate");
-        b_Translate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        b_Translate.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 b_TranslateActionPerformed(evt);
             }
         });
