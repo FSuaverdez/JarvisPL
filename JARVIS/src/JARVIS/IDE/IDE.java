@@ -1,4 +1,7 @@
+package JARVIS.IDE;
 
+
+import JARVIS.IDE.TextHighlight;
 import JARVIS.Translator.Translate;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
@@ -35,9 +38,11 @@ public class IDE extends javax.swing.JFrame
     private int tabCtr;
     private ArrayList<Files> files;
     private ArrayList<JTextPane> textPanes;
+    private TextHighlight test;
 
     public IDE()
     {
+        test = new TextHighlight();
         tabCtr = 0;
         textPanes = new ArrayList<>();
         files = new ArrayList<>();
@@ -209,6 +214,11 @@ public class IDE extends javax.swing.JFrame
         // TODO add your handling code here:
         if (LightThemeCheck.getState())
         {
+            test.setIsDark(false);
+            int curr = NotepadPane.getSelectedIndex();
+            String temp = textPanes.get(curr).getText();
+            textPanes.get(curr).setDocument(test.getDoc());
+            textPanes.get(curr).setText(temp);
             DarkThemeCheck.setState(false);
             FlatLaf.install(new FlatIntelliJLaf());
             FlatLaf.updateUI();
@@ -222,6 +232,11 @@ public class IDE extends javax.swing.JFrame
         // TODO add your handling code here:
         if (DarkThemeCheck.getState())
         {
+            test.setIsDark(true);
+            int curr = NotepadPane.getSelectedIndex();
+            String temp = textPanes.get(curr).getText();
+            textPanes.get(curr).setDocument(test.getDoc());
+            textPanes.get(curr).setText(temp);
             LightThemeCheck.setState(false);
             FlatLaf.install(new FlatDarculaLaf());
             FlatLaf.updateUI();
@@ -237,13 +252,16 @@ public class IDE extends javax.swing.JFrame
         if (name != null)
         {
             files.add(new Files(name, "", null));
-            textPanes.add(new JTextPane());
+            
+            textPanes.add(new JTextPane(test.getDoc()));
             tabCtr++;
             JScrollPane scrollPane = new JScrollPane(textPanes.get(tabCtr - 1));
             TextLineNumber line = new TextLineNumber(textPanes.get(tabCtr - 1));
 
             scrollPane.setRowHeaderView(line);
             NotepadPane.addTab(name + ".JARVIS", null, scrollPane, name + ".JARVIS");
+            
+            
         }
 
 
@@ -344,9 +362,11 @@ public class IDE extends javax.swing.JFrame
                 files.add(new Files(fileName, fileContent, fileDirectory));
                 files.get(tabCtr).setSaved(true);
                 textPanes.add(new JTextPane());
+                 textPanes.get(tabCtr).setDocument(test.getDoc());
                 textPanes.get(tabCtr).setText(fileContent);
                 JScrollPane scrollPane = new JScrollPane(textPanes.get(tabCtr));
                 TextLineNumber lineNumber = new TextLineNumber(textPanes.get(tabCtr));
+                scrollPane.setRowHeaderView(lineNumber);
                 tabCtr++;
                 NotepadPane.addTab(fileDialog.getFile(), null, scrollPane, fileDialog.getFile());
             } catch (Exception e)

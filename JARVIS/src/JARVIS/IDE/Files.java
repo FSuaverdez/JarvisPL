@@ -1,3 +1,5 @@
+package JARVIS.IDE;
+
 
 import javax.swing.JTextPane;
 
