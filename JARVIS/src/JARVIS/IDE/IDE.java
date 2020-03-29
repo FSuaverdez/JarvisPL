@@ -1,13 +1,15 @@
 package JARVIS.IDE;
 
-
 import JARVIS.IDE.TextHighlight;
 import JARVIS.Translator.Translate;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
 import java.awt.FileDialog;
+import java.awt.HeadlessException;
 import java.awt.TextArea;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -38,11 +40,12 @@ public class IDE extends javax.swing.JFrame
     private int tabCtr;
     private ArrayList<Files> files;
     private ArrayList<JTextPane> textPanes;
-    private TextHighlight test;
+    private ArrayList<TextHighlight> textHiglighter;
 
-    public IDE()
+    public IDE() throws HeadlessException
     {
-        test = new TextHighlight();
+        textHiglighter = new ArrayList<>();
+
         tabCtr = 0;
         textPanes = new ArrayList<>();
         files = new ArrayList<>();
@@ -52,6 +55,102 @@ public class IDE extends javax.swing.JFrame
         this.setLocationRelativeTo(null);
         DarkThemeCheck.setState(false);
         LightThemeCheck.setState(true);
+
+        addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                checkAllFiles();
+            }
+        });
+    }
+
+    private void checkAllFiles()
+    {
+        int i = tabCtr;
+        boolean cancel = false;
+
+        for (i = tabCtr; i > 0; i--)
+        {
+            int curr = NotepadPane.getSelectedIndex();
+            System.out.println(textPanes.get(curr).getText().equals(files.get(curr).getFileContent()));
+            if (!textPanes.get(curr).getText().equals(files.get(curr).getFileContent()))
+            {
+                int answer = JOptionPane.showConfirmDialog(null, "Do you want to save the file?", "WARNING", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+
+                switch (answer)
+                {
+                    case JOptionPane.YES_OPTION:
+                        if (files.get(NotepadPane.getSelectedIndex()).isSaved() == true)
+                        {
+                            try
+                            {
+                                FileWriter fileWriter = new FileWriter(files.get(NotepadPane.getSelectedIndex()).getFileDirectory());
+                                fileWriter.write(textPanes.get(NotepadPane.getSelectedIndex()).getText());
+                                fileWriter.close();
+                            } catch (Exception e)
+                            {
+                            }
+                        }
+                        else
+                        {
+                            FileDialog fileDialog = new FileDialog(IDE.this, "SAVE File", FileDialog.SAVE);
+                            fileDialog.setFile(files.get(NotepadPane.getSelectedIndex()).getFilename() + ".JARVIS");
+                            fileDialog.setVisible(true);
+                            if (fileDialog.getFile() != null)
+                            {
+                                try
+                                {
+                                    files.get(NotepadPane.getSelectedIndex()).setFileDirectory(fileDialog.getDirectory() + fileDialog.getFile());
+                                    files.get(NotepadPane.getSelectedIndex()).setFilename(fileDialog.getFile());
+                                    files.get(NotepadPane.getSelectedIndex()).setFileContent(textPanes.get(NotepadPane.getSelectedIndex()).getText());
+
+                                    FileWriter fileWriter = new FileWriter(files.get(NotepadPane.getSelectedIndex()).getFileDirectory());
+                                    fileWriter.write(textPanes.get(NotepadPane.getSelectedIndex()).getText());
+                                    files.get(NotepadPane.getSelectedIndex()).Saved();
+                                    fileWriter.close();
+                                } catch (Exception e)
+                                {
+                                }
+                            }
+                        }
+                        files.remove(NotepadPane.getSelectedIndex());
+                        textPanes.remove(NotepadPane.getSelectedIndex());
+                        textHiglighter.remove(NotepadPane.getSelectedIndex());
+                        NotepadPane.remove(NotepadPane.getSelectedIndex());
+
+                        tabCtr--;
+                        break;
+
+                    case JOptionPane.NO_OPTION:
+                        files.remove(NotepadPane.getSelectedIndex());
+                        textPanes.remove(NotepadPane.getSelectedIndex());
+                        textHiglighter.remove(NotepadPane.getSelectedIndex());
+                        NotepadPane.remove(NotepadPane.getSelectedIndex());
+
+                        tabCtr--;
+                        break;
+
+                    case JOptionPane.CANCEL_OPTION:
+                        System.out.println("Don't Quit");
+                        cancel = true;
+                        break;
+                }
+
+                if (cancel == true)
+                {
+                    break;
+                }
+
+            }
+
+        }
+
+        if (!cancel)
+        {
+            dispose();
+        }
 
     }
 
@@ -214,17 +313,20 @@ public class IDE extends javax.swing.JFrame
         // TODO add your handling code here:
         if (LightThemeCheck.getState())
         {
-            test.setIsDark(false);
-            int curr = NotepadPane.getSelectedIndex();
-            String temp = textPanes.get(curr).getText();
-            textPanes.get(curr).setDocument(test.getDoc());
-            textPanes.get(curr).setText(temp);
+            for (int i = 0; i < tabCtr; i++)
+            {
+                textHiglighter.get(i).setIsDark(false);
+                String temp = textPanes.get(i).getText();
+                textPanes.get(i).setDocument(textHiglighter.get(i).getDoc());
+                textPanes.get(i).setText(temp);
+            }
+
             DarkThemeCheck.setState(false);
             FlatLaf.install(new FlatIntelliJLaf());
             FlatLaf.updateUI();
         }
 
-
+        LightThemeCheck.setState(true);
     }//GEN-LAST:event_LightThemeCheckActionPerformed
 
     private void DarkThemeCheckActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_DarkThemeCheckActionPerformed
@@ -232,15 +334,21 @@ public class IDE extends javax.swing.JFrame
         // TODO add your handling code here:
         if (DarkThemeCheck.getState())
         {
-            test.setIsDark(true);
-            int curr = NotepadPane.getSelectedIndex();
-            String temp = textPanes.get(curr).getText();
-            textPanes.get(curr).setDocument(test.getDoc());
-            textPanes.get(curr).setText(temp);
+
+            for (int i = 0; i < tabCtr; i++)
+            {
+                textHiglighter.get(i).setIsDark(true);
+                String temp = textPanes.get(i).getText();
+                textPanes.get(i).setDocument(textHiglighter.get(i).getDoc());
+                textPanes.get(i).setText(temp);
+            }
+
             LightThemeCheck.setState(false);
+
             FlatLaf.install(new FlatDarculaLaf());
             FlatLaf.updateUI();
         }
+        DarkThemeCheck.setState(true);
     }//GEN-LAST:event_DarkThemeCheckActionPerformed
 
     private void NewFileActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_NewFileActionPerformed
@@ -251,17 +359,17 @@ public class IDE extends javax.swing.JFrame
 
         if (name != null)
         {
-            files.add(new Files(name, "", null));
-            
-            textPanes.add(new JTextPane(test.getDoc()));
+            files.add(new Files(name, "", ""));
+            textHiglighter.add(new TextHighlight());
+            textPanes.add(new JTextPane(textHiglighter.get(tabCtr).getDoc()));
             tabCtr++;
             JScrollPane scrollPane = new JScrollPane(textPanes.get(tabCtr - 1));
             TextLineNumber line = new TextLineNumber(textPanes.get(tabCtr - 1));
 
             scrollPane.setRowHeaderView(line);
             NotepadPane.addTab(name + ".JARVIS", null, scrollPane, name + ".JARVIS");
-            
-            
+            NotepadPane.setSelectedIndex(tabCtr - 1);
+            textPanes.get(tabCtr - 1).requestFocusInWindow();
         }
 
 
@@ -273,9 +381,6 @@ public class IDE extends javax.swing.JFrame
         int curr = NotepadPane.getSelectedIndex();
         try
         {
-            // Just one line and you are done !  
-            // We have given a command to start cmd 
-            // /K : Carries out command specified by string 
 
             String fileName = files.get(curr).getFilename();
             String cd = "cd " + files.get(curr).getFileDirectory().replace(fileName, "");
@@ -283,7 +388,7 @@ public class IDE extends javax.swing.JFrame
             String javac = "\njavac " + files.get(curr).getFilename().replace(".JARVIS", ".java");
             String run = "\njava " + files.get(curr).getFilename().replace(".JARVIS", "");
             System.out.println(cd + javac + run);
-            Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"" + cd +  "&&" + run + "&& pause && exit\"");
+            Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"" + cd + "&&" + run + "&& echo. && echo.  && pause  && exit\"");
 
         } catch (Exception e)
         {
@@ -295,6 +400,29 @@ public class IDE extends javax.swing.JFrame
     {//GEN-HEADEREND:event_BuildButtonActionPerformed
         // TODO add your handling code here:
         int curr = NotepadPane.getSelectedIndex();
+        if (files.get(curr).getFileDirectory() == "")
+        {
+            FileDialog fileDialog = new FileDialog(IDE.this, "SAVE File", FileDialog.SAVE);
+            fileDialog.setFile(files.get(NotepadPane.getSelectedIndex()).getFilename() + ".JARVIS");
+            fileDialog.setVisible(true);
+            if (fileDialog.getFile() != null)
+            {
+                try
+                {
+                    files.get(NotepadPane.getSelectedIndex()).setFileDirectory(fileDialog.getDirectory() + fileDialog.getFile());
+                    files.get(NotepadPane.getSelectedIndex()).setFilename(fileDialog.getFile());
+                    files.get(NotepadPane.getSelectedIndex()).setFileContent(textPanes.get(NotepadPane.getSelectedIndex()).getText());
+
+                    FileWriter fileWriter2 = new FileWriter(files.get(NotepadPane.getSelectedIndex()).getFileDirectory());
+                    fileWriter2.write(textPanes.get(NotepadPane.getSelectedIndex()).getText());
+                    files.get(NotepadPane.getSelectedIndex()).Saved();
+                    fileWriter2.close();
+                } catch (Exception e)
+                {
+                }
+            }
+        }
+
         String test = textPanes.get(curr).getText();
 
         Translate t = new Translate(test);
@@ -315,7 +443,7 @@ public class IDE extends javax.swing.JFrame
                 String javac = " javac " + files.get(curr).getFilename().replace(".JARVIS", ".java");
                 String delete = " del " + files.get(curr).getFilename().replace(".JARVIS", ".java");
                 Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"" + cd + " && " + javac + " && " + delete + "&& exit\"");
-          
+
             } catch (Exception e)
             {
             }
@@ -329,7 +457,9 @@ public class IDE extends javax.swing.JFrame
 
         files.remove(NotepadPane.getSelectedIndex());
         textPanes.remove(NotepadPane.getSelectedIndex());
+        textHiglighter.remove(NotepadPane.getSelectedIndex());
         NotepadPane.remove(NotepadPane.getSelectedIndex());
+
         tabCtr--;
 
     }//GEN-LAST:event_CloseFileActionPerformed
@@ -338,6 +468,7 @@ public class IDE extends javax.swing.JFrame
     {//GEN-HEADEREND:event_OpenFileActionPerformed
         // TODO add your handling code here:
         FileDialog fileDialog = new FileDialog(IDE.this, "Open File", FileDialog.LOAD);
+        fileDialog.setFile("*.JARVIS");
         fileDialog.setVisible(true);
 
         if (fileDialog.getFile() != null)
@@ -362,13 +493,16 @@ public class IDE extends javax.swing.JFrame
                 files.add(new Files(fileName, fileContent, fileDirectory));
                 files.get(tabCtr).setSaved(true);
                 textPanes.add(new JTextPane());
-                 textPanes.get(tabCtr).setDocument(test.getDoc());
+                textHiglighter.add(new TextHighlight());
+                textPanes.get(tabCtr).setDocument(textHiglighter.get(tabCtr).getDoc());
                 textPanes.get(tabCtr).setText(fileContent);
                 JScrollPane scrollPane = new JScrollPane(textPanes.get(tabCtr));
                 TextLineNumber lineNumber = new TextLineNumber(textPanes.get(tabCtr));
                 scrollPane.setRowHeaderView(lineNumber);
                 tabCtr++;
                 NotepadPane.addTab(fileDialog.getFile(), null, scrollPane, fileDialog.getFile());
+                NotepadPane.setSelectedIndex(tabCtr - 1);
+                textPanes.get(tabCtr - 1).requestFocusInWindow();
             } catch (Exception e)
             {
 
