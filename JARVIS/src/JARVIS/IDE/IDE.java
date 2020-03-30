@@ -5,6 +5,7 @@ import JARVIS.Translator.Translate;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
+import java.awt.Color;
 import java.awt.FileDialog;
 import java.awt.HeadlessException;
 import java.awt.TextArea;
@@ -21,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.UIManager;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -50,12 +52,15 @@ public class IDE extends javax.swing.JFrame
         textPanes = new ArrayList<>();
         files = new ArrayList<>();
         FlatLaf.install(new FlatIntelliJLaf());
+        UIManager.put( "ScrollBar.showButtons", true );
         FlatLaf.updateUI();
         initComponents();
+        
+        
         this.setLocationRelativeTo(null);
         DarkThemeCheck.setState(false);
         LightThemeCheck.setState(true);
-
+        setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter()
         {
             @Override
@@ -69,7 +74,7 @@ public class IDE extends javax.swing.JFrame
     private void checkAllFiles()
     {
         int i = tabCtr;
-        boolean cancel = false;
+        int cancel = 0;
 
         for (i = tabCtr; i > 0; i--)
         {
@@ -77,44 +82,12 @@ public class IDE extends javax.swing.JFrame
             System.out.println(textPanes.get(curr).getText().equals(files.get(curr).getFileContent()));
             if (!textPanes.get(curr).getText().equals(files.get(curr).getFileContent()))
             {
-                int answer = JOptionPane.showConfirmDialog(null, "Do you want to save the file?", "WARNING", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-
+                int answer = JOptionPane.showConfirmDialog(null, "Do you want to save the " + files.get(curr).getFilename() + "?", "WARNING", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                System.out.println(answer);
                 switch (answer)
                 {
                     case JOptionPane.YES_OPTION:
-                        if (files.get(NotepadPane.getSelectedIndex()).isSaved() == true)
-                        {
-                            try
-                            {
-                                FileWriter fileWriter = new FileWriter(files.get(NotepadPane.getSelectedIndex()).getFileDirectory());
-                                fileWriter.write(textPanes.get(NotepadPane.getSelectedIndex()).getText());
-                                fileWriter.close();
-                            } catch (Exception e)
-                            {
-                            }
-                        }
-                        else
-                        {
-                            FileDialog fileDialog = new FileDialog(IDE.this, "SAVE File", FileDialog.SAVE);
-                            fileDialog.setFile(files.get(NotepadPane.getSelectedIndex()).getFilename() + ".JARVIS");
-                            fileDialog.setVisible(true);
-                            if (fileDialog.getFile() != null)
-                            {
-                                try
-                                {
-                                    files.get(NotepadPane.getSelectedIndex()).setFileDirectory(fileDialog.getDirectory() + fileDialog.getFile());
-                                    files.get(NotepadPane.getSelectedIndex()).setFilename(fileDialog.getFile());
-                                    files.get(NotepadPane.getSelectedIndex()).setFileContent(textPanes.get(NotepadPane.getSelectedIndex()).getText());
-
-                                    FileWriter fileWriter = new FileWriter(files.get(NotepadPane.getSelectedIndex()).getFileDirectory());
-                                    fileWriter.write(textPanes.get(NotepadPane.getSelectedIndex()).getText());
-                                    files.get(NotepadPane.getSelectedIndex()).Saved();
-                                    fileWriter.close();
-                                } catch (Exception e)
-                                {
-                                }
-                            }
-                        }
+                        saveFile();
                         files.remove(NotepadPane.getSelectedIndex());
                         textPanes.remove(NotepadPane.getSelectedIndex());
                         textHiglighter.remove(NotepadPane.getSelectedIndex());
@@ -134,24 +107,65 @@ public class IDE extends javax.swing.JFrame
 
                     case JOptionPane.CANCEL_OPTION:
                         System.out.println("Don't Quit");
-                        cancel = true;
+                        cancel++;
                         break;
+                    case JOptionPane.CLOSED_OPTION:
+                        cancel++;
+                        break;
+
                 }
 
-                if (cancel == true)
-                {
-                    break;
-                }
-
+            }
+            if (cancel > 0)
+            {
+                break;
             }
 
         }
 
-        if (!cancel)
+        if (cancel == 0 || tabCtr == 0)
         {
+            System.out.println(cancel);
             dispose();
         }
 
+    }
+
+    public void saveFile()
+    {
+        if (files.get(NotepadPane.getSelectedIndex()).isSaved() == true)
+        {
+            try
+            {
+                FileWriter fileWriter = new FileWriter(files.get(NotepadPane.getSelectedIndex()).getFileDirectory());
+                fileWriter.write(textPanes.get(NotepadPane.getSelectedIndex()).getText());
+                fileWriter.close();
+            } catch (Exception e)
+            {
+            }
+        }
+        else
+        {
+            FileDialog fileDialog = new FileDialog(IDE.this, "SAVE File", FileDialog.SAVE);
+            fileDialog.setFile(files.get(NotepadPane.getSelectedIndex()).getFilename());
+            fileDialog.setVisible(true);
+            if (fileDialog.getFile() != null)
+            {
+                try
+                {
+                    files.get(NotepadPane.getSelectedIndex()).setFileDirectory(fileDialog.getDirectory() + fileDialog.getFile());
+                    files.get(NotepadPane.getSelectedIndex()).setFilename(fileDialog.getFile());
+                    files.get(NotepadPane.getSelectedIndex()).setFileContent(textPanes.get(NotepadPane.getSelectedIndex()).getText());
+
+                    FileWriter fileWriter = new FileWriter(files.get(NotepadPane.getSelectedIndex()).getFileDirectory());
+                    fileWriter.write(textPanes.get(NotepadPane.getSelectedIndex()).getText());
+                    files.get(NotepadPane.getSelectedIndex()).Saved();
+                    fileWriter.close();
+                } catch (Exception e)
+                {
+                }
+            }
+        }
     }
 
     /**
@@ -168,17 +182,18 @@ public class IDE extends javax.swing.JFrame
         RunButton = new javax.swing.JButton();
         BuildButton = new javax.swing.JButton();
         jMenuBar2 = new javax.swing.JMenuBar();
-        jMenu3 = new javax.swing.JMenu();
+        FileMenu = new javax.swing.JMenu();
         NewFile = new javax.swing.JMenuItem();
         OpenFile = new javax.swing.JMenuItem();
         SaveFile = new javax.swing.JMenuItem();
         CloseFile = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        EditMenu = new javax.swing.JMenu();
+        OptionMenu = new javax.swing.JMenu();
         ThemeChooser = new javax.swing.JMenu();
         LightThemeCheck = new javax.swing.JCheckBoxMenuItem();
         DarkThemeCheck = new javax.swing.JCheckBoxMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("JARVIS IDE");
         setLocationByPlatform(true);
 
@@ -202,8 +217,9 @@ public class IDE extends javax.swing.JFrame
             }
         });
 
-        jMenu3.setText("File");
+        FileMenu.setText("File");
 
+        NewFile.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         NewFile.setText("New");
         NewFile.addActionListener(new java.awt.event.ActionListener()
         {
@@ -212,8 +228,9 @@ public class IDE extends javax.swing.JFrame
                 NewFileActionPerformed(evt);
             }
         });
-        jMenu3.add(NewFile);
+        FileMenu.add(NewFile);
 
+        OpenFile.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         OpenFile.setText("Open");
         OpenFile.addActionListener(new java.awt.event.ActionListener()
         {
@@ -222,8 +239,9 @@ public class IDE extends javax.swing.JFrame
                 OpenFileActionPerformed(evt);
             }
         });
-        jMenu3.add(OpenFile);
+        FileMenu.add(OpenFile);
 
+        SaveFile.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         SaveFile.setText("Save");
         SaveFile.addActionListener(new java.awt.event.ActionListener()
         {
@@ -232,7 +250,7 @@ public class IDE extends javax.swing.JFrame
                 SaveFileActionPerformed(evt);
             }
         });
-        jMenu3.add(SaveFile);
+        FileMenu.add(SaveFile);
 
         CloseFile.setText("Close");
         CloseFile.addActionListener(new java.awt.event.ActionListener()
@@ -242,11 +260,14 @@ public class IDE extends javax.swing.JFrame
                 CloseFileActionPerformed(evt);
             }
         });
-        jMenu3.add(CloseFile);
+        FileMenu.add(CloseFile);
 
-        jMenuBar2.add(jMenu3);
+        jMenuBar2.add(FileMenu);
 
-        jMenu1.setText("Option");
+        EditMenu.setText("Edit");
+        jMenuBar2.add(EditMenu);
+
+        OptionMenu.setText("Option");
 
         ThemeChooser.setText("Theme");
 
@@ -272,9 +293,9 @@ public class IDE extends javax.swing.JFrame
         });
         ThemeChooser.add(DarkThemeCheck);
 
-        jMenu1.add(ThemeChooser);
+        OptionMenu.add(ThemeChooser);
 
-        jMenuBar2.add(jMenu1);
+        jMenuBar2.add(OptionMenu);
 
         setJMenuBar(jMenuBar2);
 
@@ -359,6 +380,7 @@ public class IDE extends javax.swing.JFrame
 
         if (name != null)
         {
+            name += ".JARVIS";
             files.add(new Files(name, "", ""));
             textHiglighter.add(new TextHighlight());
             textPanes.add(new JTextPane(textHiglighter.get(tabCtr).getDoc()));
@@ -367,7 +389,7 @@ public class IDE extends javax.swing.JFrame
             TextLineNumber line = new TextLineNumber(textPanes.get(tabCtr - 1));
 
             scrollPane.setRowHeaderView(line);
-            NotepadPane.addTab(name + ".JARVIS", null, scrollPane, name + ".JARVIS");
+            NotepadPane.addTab(name, null, scrollPane, name);
             NotepadPane.setSelectedIndex(tabCtr - 1);
             textPanes.get(tabCtr - 1).requestFocusInWindow();
         }
@@ -400,29 +422,7 @@ public class IDE extends javax.swing.JFrame
     {//GEN-HEADEREND:event_BuildButtonActionPerformed
         // TODO add your handling code here:
         int curr = NotepadPane.getSelectedIndex();
-        if (files.get(curr).getFileDirectory() == "")
-        {
-            FileDialog fileDialog = new FileDialog(IDE.this, "SAVE File", FileDialog.SAVE);
-            fileDialog.setFile(files.get(NotepadPane.getSelectedIndex()).getFilename() + ".JARVIS");
-            fileDialog.setVisible(true);
-            if (fileDialog.getFile() != null)
-            {
-                try
-                {
-                    files.get(NotepadPane.getSelectedIndex()).setFileDirectory(fileDialog.getDirectory() + fileDialog.getFile());
-                    files.get(NotepadPane.getSelectedIndex()).setFilename(fileDialog.getFile());
-                    files.get(NotepadPane.getSelectedIndex()).setFileContent(textPanes.get(NotepadPane.getSelectedIndex()).getText());
-
-                    FileWriter fileWriter2 = new FileWriter(files.get(NotepadPane.getSelectedIndex()).getFileDirectory());
-                    fileWriter2.write(textPanes.get(NotepadPane.getSelectedIndex()).getText());
-                    files.get(NotepadPane.getSelectedIndex()).Saved();
-                    fileWriter2.close();
-                } catch (Exception e)
-                {
-                }
-            }
-        }
-
+        saveFile();
         String test = textPanes.get(curr).getText();
 
         Translate t = new Translate(test);
@@ -529,7 +529,7 @@ public class IDE extends javax.swing.JFrame
         else
         {
             FileDialog fileDialog = new FileDialog(IDE.this, "SAVE File", FileDialog.SAVE);
-            fileDialog.setFile(files.get(NotepadPane.getSelectedIndex()).getFilename() + ".JARVIS");
+            fileDialog.setFile(files.get(NotepadPane.getSelectedIndex()).getFilename());
             fileDialog.setVisible(true);
             if (fileDialog.getFile() != null)
             {
@@ -561,29 +561,9 @@ public class IDE extends javax.swing.JFrame
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try
-        {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
-            {
-                if ("Windows".equals(info.getName()))
-                {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex)
-        {
-            java.util.logging.Logger.getLogger(IDE.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex)
-        {
-            java.util.logging.Logger.getLogger(IDE.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex)
-        {
-            java.util.logging.Logger.getLogger(IDE.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex)
-        {
-            java.util.logging.Logger.getLogger(IDE.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+
+         
+      
         //</editor-fold>
         //</editor-fold>
 
@@ -601,15 +581,16 @@ public class IDE extends javax.swing.JFrame
     private javax.swing.JButton BuildButton;
     private javax.swing.JMenuItem CloseFile;
     private javax.swing.JCheckBoxMenuItem DarkThemeCheck;
+    private javax.swing.JMenu EditMenu;
+    private javax.swing.JMenu FileMenu;
     private javax.swing.JCheckBoxMenuItem LightThemeCheck;
     private javax.swing.JMenuItem NewFile;
     private javax.swing.JTabbedPane NotepadPane;
     private javax.swing.JMenuItem OpenFile;
+    private javax.swing.JMenu OptionMenu;
     private javax.swing.JButton RunButton;
     private javax.swing.JMenuItem SaveFile;
     private javax.swing.JMenu ThemeChooser;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar2;
     // End of variables declaration//GEN-END:variables
 }
