@@ -59,7 +59,7 @@ public class TextHighlight extends JFrame
                     {
                         if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W"))
                         {
-                            if (text.substring(wordL, wordR).matches("(\\W)*(JARVIS|endJARVIS|method|endMethod|display)"))
+                            if (text.substring(wordL, wordR).matches("(\\W)*(JARVIS|endJARVIS|Method|endMethod|display)"))
                             {
                                 setCharacterAttributes(wordL, wordR - wordL, attr, false);
                             }
@@ -85,7 +85,7 @@ public class TextHighlight extends JFrame
                     }
                     int after = findFirstNonWordChar(text, offs);
 
-                    if (text.substring(before, after).matches("(\\W)*(JARVIS|endJARVIS|method|endMethod|display)"))
+                    if (text.substring(before, after).matches("(\\W)*(JARVIS|endJARVIS|Method|endMethod|display)"))
                     {
                         setCharacterAttributes(before, after - before, attr, false);
                     }
@@ -121,7 +121,7 @@ public class TextHighlight extends JFrame
                     {
                         if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W"))
                         {
-                            if (text.substring(wordL, wordR).matches("(\\W)*(JARVIS|endJARVIS|method|endMethod|display)"))
+                            if (text.substring(wordL, wordR).matches("(\\W)*(JARVIS|endJARVIS|Method|endMethod|display)"))
                             {
                                 setCharacterAttributes(wordL, wordR - wordL, attr, false);
                             }
@@ -147,7 +147,7 @@ public class TextHighlight extends JFrame
                     }
                     int after = findFirstNonWordChar(text, offs);
 
-                    if (text.substring(before, after).matches("(\\W)*(JARVIS|endJARVIS|method|endMethod|display)"))
+                    if (text.substring(before, after).matches("(\\W)*(JARVIS|endJARVIS|Method|endMethod|display)"))
                     {
                         setCharacterAttributes(before, after - before, attr, false);
                     }
@@ -204,7 +204,7 @@ public class TextHighlight extends JFrame
                 {
                     if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W"))
                     {
-                        if (text.substring(wordL, wordR).matches("(\\W)*(JARVIS|endJARVIS|method|endMethod|display)"))
+                        if (text.substring(wordL, wordR).matches("(\\W)*(JARVIS|endJARVIS|Method|endMethod|display)"))
                         {
                             setCharacterAttributes(wordL, wordR - wordL, attr, false);
                         }
@@ -230,7 +230,7 @@ public class TextHighlight extends JFrame
                 }
                 int after = findFirstNonWordChar(text, offs);
 
-                if (text.substring(before, after).matches("(\\W)*(JARVIS|endJARVIS|method|endMethod|display)"))
+                if (text.substring(before, after).matches("(\\W)*(JARVIS|endJARVIS|Method|endMethod|display)"))
                 {
                     setCharacterAttributes(before, after - before, attr, false);
                 }

@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.FileDialog;
 import java.awt.HeadlessException;
 import java.awt.TextArea;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -52,11 +54,10 @@ public class IDE extends javax.swing.JFrame
         textPanes = new ArrayList<>();
         files = new ArrayList<>();
         FlatLaf.install(new FlatIntelliJLaf());
-        UIManager.put( "ScrollBar.showButtons", true );
+        UIManager.put("ScrollBar.showButtons", true);
         FlatLaf.updateUI();
         initComponents();
-        
-        
+
         this.setLocationRelativeTo(null);
         DarkThemeCheck.setState(false);
         LightThemeCheck.setState(true);
@@ -125,7 +126,7 @@ public class IDE extends javax.swing.JFrame
 
         if (cancel == 0 || tabCtr == 0)
         {
-            System.out.println(cancel);
+       
             dispose();
         }
 
@@ -137,8 +138,10 @@ public class IDE extends javax.swing.JFrame
         {
             try
             {
+                int curr = NotepadPane.getSelectedIndex();
                 FileWriter fileWriter = new FileWriter(files.get(NotepadPane.getSelectedIndex()).getFileDirectory());
                 fileWriter.write(textPanes.get(NotepadPane.getSelectedIndex()).getText());
+                NotepadPane.setTitleAt(curr, files.get(curr).getFilename());
                 fileWriter.close();
             } catch (Exception e)
             {
@@ -153,6 +156,7 @@ public class IDE extends javax.swing.JFrame
             {
                 try
                 {
+                    int curr = NotepadPane.getSelectedIndex();
                     files.get(NotepadPane.getSelectedIndex()).setFileDirectory(fileDialog.getDirectory() + fileDialog.getFile());
                     files.get(NotepadPane.getSelectedIndex()).setFilename(fileDialog.getFile());
                     files.get(NotepadPane.getSelectedIndex()).setFileContent(textPanes.get(NotepadPane.getSelectedIndex()).getText());
@@ -160,6 +164,7 @@ public class IDE extends javax.swing.JFrame
                     FileWriter fileWriter = new FileWriter(files.get(NotepadPane.getSelectedIndex()).getFileDirectory());
                     fileWriter.write(textPanes.get(NotepadPane.getSelectedIndex()).getText());
                     files.get(NotepadPane.getSelectedIndex()).Saved();
+                    NotepadPane.setTitleAt(curr, files.get(curr).getFilename());
                     fileWriter.close();
                 } catch (Exception e)
                 {
@@ -384,6 +389,41 @@ public class IDE extends javax.swing.JFrame
             files.add(new Files(name, "", ""));
             textHiglighter.add(new TextHighlight());
             textPanes.add(new JTextPane(textHiglighter.get(tabCtr).getDoc()));
+            textPanes.get(tabCtr).addKeyListener(new KeyListener()
+            {
+                @Override
+                public void keyTyped(KeyEvent ke)
+                {
+                    // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void keyPressed(KeyEvent ke)
+                {
+                    // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+                }
+
+                @Override
+                public void keyReleased(KeyEvent ke)
+                {
+
+                    int curr = NotepadPane.getSelectedIndex();
+
+                    if (!textPanes.get(curr).getText().equals(files.get(curr).getFileContent()))
+                    {
+                       
+                        String temp = files.get(curr).getFilename();
+                        NotepadPane.setTitleAt(curr, "*" + temp);
+                    }
+                    else
+                    {
+                      
+                        String temp = files.get(curr).getFilename();
+                        NotepadPane.setTitleAt(curr, temp);
+                    }
+                }
+            });
             tabCtr++;
             JScrollPane scrollPane = new JScrollPane(textPanes.get(tabCtr - 1));
             TextLineNumber line = new TextLineNumber(textPanes.get(tabCtr - 1));
@@ -486,13 +526,49 @@ public class IDE extends javax.swing.JFrame
 
                 while ((line = reader.readLine()) != null)
                 {
-                    sb.append(line + "\n");
+                    sb.append(line);
                     fileContent = sb.toString();
+                    sb.append("\n");
                 }
 
                 files.add(new Files(fileName, fileContent, fileDirectory));
                 files.get(tabCtr).setSaved(true);
                 textPanes.add(new JTextPane());
+                textPanes.get(tabCtr).addKeyListener(new KeyListener()
+                {
+                    @Override
+                    public void keyTyped(KeyEvent ke)
+                    {
+                        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent ke)
+                    {
+                        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent ke)
+                    {
+
+                        int curr = NotepadPane.getSelectedIndex();
+
+                        if (!textPanes.get(curr).getText().equals(files.get(curr).getFileContent()))
+                        {
+                          
+                            String temp = files.get(curr).getFilename();
+                            NotepadPane.setTitleAt(curr, "*" + temp);
+                        }
+                        else
+                        {
+                           
+                            String temp = files.get(curr).getFilename();
+                            NotepadPane.setTitleAt(curr, temp);
+                        }
+                    }
+                });
                 textHiglighter.add(new TextHighlight());
                 textPanes.get(tabCtr).setDocument(textHiglighter.get(tabCtr).getDoc());
                 textPanes.get(tabCtr).setText(fileContent);
@@ -503,6 +579,7 @@ public class IDE extends javax.swing.JFrame
                 NotepadPane.addTab(fileDialog.getFile(), null, scrollPane, fileDialog.getFile());
                 NotepadPane.setSelectedIndex(tabCtr - 1);
                 textPanes.get(tabCtr - 1).requestFocusInWindow();
+
             } catch (Exception e)
             {
 
@@ -519,8 +596,12 @@ public class IDE extends javax.swing.JFrame
         {
             try
             {
+                int curr = NotepadPane.getSelectedIndex();
                 FileWriter fileWriter = new FileWriter(files.get(NotepadPane.getSelectedIndex()).getFileDirectory());
                 fileWriter.write(textPanes.get(NotepadPane.getSelectedIndex()).getText());
+                files.get(NotepadPane.getSelectedIndex()).Saved();
+                files.get(NotepadPane.getSelectedIndex()).setFileContent(textPanes.get(NotepadPane.getSelectedIndex()).getText());
+                NotepadPane.setTitleAt(curr, files.get(curr).getFilename());
                 fileWriter.close();
             } catch (Exception e)
             {
@@ -535,6 +616,7 @@ public class IDE extends javax.swing.JFrame
             {
                 try
                 {
+                    int curr = NotepadPane.getSelectedIndex();
                     files.get(NotepadPane.getSelectedIndex()).setFileDirectory(fileDialog.getDirectory() + fileDialog.getFile());
                     files.get(NotepadPane.getSelectedIndex()).setFilename(fileDialog.getFile());
                     files.get(NotepadPane.getSelectedIndex()).setFileContent(textPanes.get(NotepadPane.getSelectedIndex()).getText());
@@ -542,6 +624,8 @@ public class IDE extends javax.swing.JFrame
                     FileWriter fileWriter = new FileWriter(files.get(NotepadPane.getSelectedIndex()).getFileDirectory());
                     fileWriter.write(textPanes.get(NotepadPane.getSelectedIndex()).getText());
                     files.get(NotepadPane.getSelectedIndex()).Saved();
+                    files.get(NotepadPane.getSelectedIndex()).setFileContent(textPanes.get(NotepadPane.getSelectedIndex()).getText());
+                    NotepadPane.setTitleAt(curr, files.get(curr).getFilename());
                     fileWriter.close();
                 } catch (Exception e)
                 {
@@ -562,8 +646,6 @@ public class IDE extends javax.swing.JFrame
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
 
-         
-      
         //</editor-fold>
         //</editor-fold>
 

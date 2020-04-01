@@ -50,7 +50,7 @@ public class Method_Parser extends Parser{
         String block;
         tokenized = new Tokenizer(str);
         Token first = tokenized.nextToken();
-        if(first.getToken().equals("method"))
+        if(first.getToken().equals("Method"))
         {
             params = new ArrayList<Parameter>();
             Token next = tokenized.nextToken();
@@ -124,7 +124,7 @@ public class Method_Parser extends Parser{
                                 return (lastBlock = new Method_Block(superBlock,name,returnType,null,null,BlockType.ERROR));
                             }
                             
-                            block = "method " + returnToken + " " + name + "(";
+                            block = "Method " + returnToken + " " + name + "(";
                             while(tokenized.hasNext())
                             {
                                 next = tokenized.nextToken();

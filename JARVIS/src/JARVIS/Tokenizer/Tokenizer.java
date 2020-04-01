@@ -40,7 +40,7 @@ public class Tokenizer {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.CONDITIONAL_STATEMENTS));
         }
 
-        for (String s : new String[]{"display", "read", "JARVIS", "return", "method", "endMethod", "endJARVIS"}) {
+        for (String s : new String[]{"display", "read", "JARVIS", "return", "Method", "endMethod", "endJARVIS"}) {
             tokenDatas.add(new TokenData(Pattern.compile("^(" + s + ")"), TokenType.RESERVED_WORDS));
         }
 
