@@ -142,6 +142,7 @@ public class IDE extends javax.swing.JFrame
                 FileWriter fileWriter = new FileWriter(files.get(NotepadPane.getSelectedIndex()).getFileDirectory());
                 fileWriter.write(textPanes.get(NotepadPane.getSelectedIndex()).getText());
                 NotepadPane.setTitleAt(curr, files.get(curr).getFilename());
+                files.get(NotepadPane.getSelectedIndex()).setFileContent(textPanes.get(NotepadPane.getSelectedIndex()).getText());
                 fileWriter.close();
             } catch (Exception e)
             {
@@ -376,7 +377,42 @@ public class IDE extends javax.swing.JFrame
         }
         DarkThemeCheck.setState(true);
     }//GEN-LAST:event_DarkThemeCheckActionPerformed
+    
+    
+    private void refreshUI(){
+        if (DarkThemeCheck.getState())
+        {
 
+            for (int i = 0; i < tabCtr; i++)
+            {
+                textHiglighter.get(i).setIsDark(true);
+                String temp = textPanes.get(i).getText();
+                textPanes.get(i).setDocument(textHiglighter.get(i).getDoc());
+                textPanes.get(i).setText(temp);
+            }
+
+            LightThemeCheck.setState(false);
+
+            FlatLaf.install(new FlatDarculaLaf());
+            FlatLaf.updateUI();
+            DarkThemeCheck.setState(true);
+        }else{
+            for (int i = 0; i < tabCtr; i++)
+            {
+                textHiglighter.get(i).setIsDark(false);
+                String temp = textPanes.get(i).getText();
+                textPanes.get(i).setDocument(textHiglighter.get(i).getDoc());
+                textPanes.get(i).setText(temp);
+            }
+
+            DarkThemeCheck.setState(false);
+            FlatLaf.install(new FlatIntelliJLaf());
+            FlatLaf.updateUI();
+            LightThemeCheck.setState(true);
+        }
+        
+    }
+    
     private void NewFileActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_NewFileActionPerformed
     {//GEN-HEADEREND:event_NewFileActionPerformed
         // TODO add your handling code here:
@@ -434,7 +470,7 @@ public class IDE extends javax.swing.JFrame
             textPanes.get(tabCtr - 1).requestFocusInWindow();
         }
 
-
+        refreshUI();
     }//GEN-LAST:event_NewFileActionPerformed
 
     private void RunButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_RunButtonActionPerformed
@@ -494,13 +530,41 @@ public class IDE extends javax.swing.JFrame
     private void CloseFileActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_CloseFileActionPerformed
     {//GEN-HEADEREND:event_CloseFileActionPerformed
         // TODO add your handling code here:
+        int curr = NotepadPane.getSelectedIndex();
+       if (!textPanes.get(curr).getText().equals(files.get(curr).getFileContent()))
+            {
+                int answer = JOptionPane.showConfirmDialog(null, "Do you want to save the " + files.get(curr).getFilename() + "?", "WARNING", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                System.out.println(answer);
+                switch (answer)
+                {
+                    case JOptionPane.YES_OPTION:
+                        saveFile();
+                        files.remove(NotepadPane.getSelectedIndex());
+                        textPanes.remove(NotepadPane.getSelectedIndex());
+                        textHiglighter.remove(NotepadPane.getSelectedIndex());
+                        NotepadPane.remove(NotepadPane.getSelectedIndex());
 
-        files.remove(NotepadPane.getSelectedIndex());
-        textPanes.remove(NotepadPane.getSelectedIndex());
-        textHiglighter.remove(NotepadPane.getSelectedIndex());
-        NotepadPane.remove(NotepadPane.getSelectedIndex());
+                        tabCtr--;
+                        break;
 
-        tabCtr--;
+                    case JOptionPane.NO_OPTION:
+                        files.remove(NotepadPane.getSelectedIndex());
+                        textPanes.remove(NotepadPane.getSelectedIndex());
+                        textHiglighter.remove(NotepadPane.getSelectedIndex());
+                        NotepadPane.remove(NotepadPane.getSelectedIndex());
+
+                        tabCtr--;
+                        break;
+
+                    case JOptionPane.CANCEL_OPTION:
+                        System.out.println("Don't Quit");
+                        break;
+                    case JOptionPane.CLOSED_OPTION:
+                        break;
+
+                }
+
+            }
 
     }//GEN-LAST:event_CloseFileActionPerformed
 
@@ -586,6 +650,7 @@ public class IDE extends javax.swing.JFrame
             }
 
         }
+        refreshUI();
     }//GEN-LAST:event_OpenFileActionPerformed
 
     private void SaveFileActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_SaveFileActionPerformed
