@@ -18,7 +18,7 @@ public class TextHighlight extends JFrame
 
     private DefaultStyledDocument doc;
     private boolean isDark;
-    private final String KEYWORDS = "JARVIS|endJARVIS|Method|endMethod|display|String|int";
+    private final String KEYWORDS = "JARVIS|endJARVIS|Method|endMethod|display|String|int|char|float|boolean";
 
     private int findLastNonWordChar(String text, int index)
     {

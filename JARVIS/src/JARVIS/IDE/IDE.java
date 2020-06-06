@@ -181,8 +181,7 @@ public class IDE extends javax.swing.JFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         NotepadPane = new javax.swing.JTabbedPane();
         RunButton = new javax.swing.JButton();
@@ -193,7 +192,6 @@ public class IDE extends javax.swing.JFrame
         OpenFile = new javax.swing.JMenuItem();
         SaveFile = new javax.swing.JMenuItem();
         CloseFile = new javax.swing.JMenuItem();
-        EditMenu = new javax.swing.JMenu();
         OptionMenu = new javax.swing.JMenu();
         ThemeChooser = new javax.swing.JMenu();
         LightThemeCheck = new javax.swing.JCheckBoxMenuItem();
@@ -206,19 +204,15 @@ public class IDE extends javax.swing.JFrame
         NotepadPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         RunButton.setText("Run");
-        RunButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        RunButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RunButtonActionPerformed(evt);
             }
         });
 
         BuildButton.setText("Build");
-        BuildButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        BuildButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BuildButtonActionPerformed(evt);
             }
         });
@@ -227,10 +221,8 @@ public class IDE extends javax.swing.JFrame
 
         NewFile.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         NewFile.setText("New");
-        NewFile.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        NewFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NewFileActionPerformed(evt);
             }
         });
@@ -238,10 +230,8 @@ public class IDE extends javax.swing.JFrame
 
         OpenFile.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         OpenFile.setText("Open");
-        OpenFile.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        OpenFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OpenFileActionPerformed(evt);
             }
         });
@@ -249,20 +239,16 @@ public class IDE extends javax.swing.JFrame
 
         SaveFile.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         SaveFile.setText("Save");
-        SaveFile.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        SaveFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SaveFileActionPerformed(evt);
             }
         });
         FileMenu.add(SaveFile);
 
         CloseFile.setText("Close");
-        CloseFile.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        CloseFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CloseFileActionPerformed(evt);
             }
         });
@@ -270,19 +256,14 @@ public class IDE extends javax.swing.JFrame
 
         jMenuBar2.add(FileMenu);
 
-        EditMenu.setText("Edit");
-        jMenuBar2.add(EditMenu);
-
         OptionMenu.setText("Option");
 
         ThemeChooser.setText("Theme");
 
         LightThemeCheck.setSelected(true);
         LightThemeCheck.setText("Light Theme");
-        LightThemeCheck.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        LightThemeCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LightThemeCheckActionPerformed(evt);
             }
         });
@@ -290,10 +271,8 @@ public class IDE extends javax.swing.JFrame
 
         DarkThemeCheck.setSelected(true);
         DarkThemeCheck.setText("Dark Theme");
-        DarkThemeCheck.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        DarkThemeCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DarkThemeCheckActionPerformed(evt);
             }
         });
@@ -728,7 +707,6 @@ public class IDE extends javax.swing.JFrame
     private javax.swing.JButton BuildButton;
     private javax.swing.JMenuItem CloseFile;
     private javax.swing.JCheckBoxMenuItem DarkThemeCheck;
-    private javax.swing.JMenu EditMenu;
     private javax.swing.JMenu FileMenu;
     private javax.swing.JCheckBoxMenuItem LightThemeCheck;
     private javax.swing.JMenuItem NewFile;
